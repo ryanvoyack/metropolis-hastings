@@ -1,0 +1,85 @@
+---
+title: "Metropolis-Hastings"
+author: "Ryan Voyack"
+date: "4/18/2021"
+output: html_document
+header-includes:
+   - \usepackage{amsmath}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+#library(ggplot2)
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_knit$set(root.dir= normalizePath('..'))
+knitr::opts_chunk$set(error = FALSE)
+```
+
+
+## Algorithm (1-d case) :
+#### 1) initialize
+select proposal density $J \sim dist( \vec{\Sigma_0} )$
+
+select starting point for posterior parameter $\theta_{curr}$ where $g$ represents our unnormalized posterior density with some implicity known parameterization
+
+#### 2) iterate through the following:
+i) generate new $\theta$ from proposal distribution:
+
+*note that in this case, J(x|y) would mean generate x from distribution J given parameterization y, hence the left arrow*
+\[ \theta_{prop} \leftarrow \theta_{curr} + J(\theta_{prop} | \vec{\Sigma_0}) \]
+ii) calculate acceptance function, A:
+
+*note that in this case, J(x|y) would mean evaluate density of x in distribution J given parameterization y*
+\[ A = min\{ 1 , \frac{g(\theta_{prop}) J(\theta_{curr} | \vec{\Sigma_0}) }{ g(\theta_{curr}) J(\theta_{prop} | \vec{\Sigma_0}) } \}\]
+iii) generate random uniform probability
+\[ u \leftarrow Unif(u|a = 0, b = 1)\]
+iii) accept or reject $\theta_{prop}$ and move onto next iteration with our value for $\theta_{curr}$
+\[ \theta_{curr} \leftarrow \begin{cases} 
+      \theta_{prop} & A > u \\
+      \theta_{curr} & A \leq u
+   \end{cases}
+\]
+iv) move up to next iteration
+
+
+<!-- ```{r} -->
+<!-- accept <- min(1, (dgamma(candidate,a, b)/dgamma(x, a, b))/ -->
+<!--                 (dnorm(candidate,mu, sig)/dnorm(x, mu, sig))) -->
+
+<!-- ``` -->
+
+\[\space\]
+
+\[\space\]
+
+### Notice that if we have a symmetric proposal distribution, one may also equivalently (naively) rewrite as follows. The difference here is we update the parametrization of the proposal distribution
+
+\[\space\]
+
+
+#### 1) initialize
+select proposal density $J \sim dist( \mu , \vec{\Sigma_0} )$ where $\mu$ is a location parameter
+
+select starting point for posterior parameter $\theta_{curr}$ where $g$ represents our unnormalized posterior density with some implicity known parameterization
+
+#### 2) iterate through the following:
+i) generate new $\theta$ from proposal distribution:
+
+*note that in this case, J(x|y) would mean generate x from distribution J given parameterization y, hence the left arrow*
+\[ \theta_{prop} \leftarrow J(\theta_{prop} | \mu = \theta_{curr}, \vec{\Sigma_0}) \]
+ii) calculate acceptance function, A:
+
+*note that in this case, J(x|y) would mean evaluate density of x in distribution J given parameterization y*
+\[ A = min\{ 1 , \frac{g(\theta_{prop}) J(\theta_{curr} | \mu = \theta_{prop}, \vec{\Sigma_0}) }{ g(\theta_{curr}) J(\theta_{prop} | \mu = \theta_{curr}, \vec{\Sigma_0}) } \}\]
+iii) generate random uniform probability
+\[ u \leftarrow Unif(u|a = 0, b = 1)\]
+iii) accept or reject $\theta_{prop}$ and move onto next iteration with our value for $\theta_{curr}$
+\[ \theta_{curr} \leftarrow \begin{cases} 
+      \theta_{prop} & A > u \\
+      \theta_{curr} & A \leq u
+   \end{cases}
+\]
+iv) move up to next iteration
+
+
+
